@@ -1,0 +1,403 @@
+/* ===== CSS 变量定义 ===== */
+:root {
+  /* 颜色系统 */
+  --background-color: #0a0a0f;
+  --glass-background: rgba(17, 24, 39, 0.4);
+  --glass-border: rgba(148, 163, 184, 0.2);
+  --primary-text-color: #e5e7eb;
+  --secondary-text-color: #9ca3af;
+  --accent-glow-color: #00d4ff;
+  --accent-purple: #8b5cf6;
+  --accent-pink: #ec4899;
+  
+  /* 字体系统 */
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  
+  /* 间距系统 */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+  
+  /* 圆角系统 */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  
+  /* 阴影系统 */
+  --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== 基础重置和全局样式 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===== 动态极光背景 ===== */
+.aurora-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.aurora-layer {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, 
+    rgba(0, 212, 255, 0.1) 0%,
+    rgba(139, 92, 246, 0.1) 25%,
+    rgba(236, 72, 153, 0.1) 50%,
+    rgba(0, 212, 255, 0.1) 75%,
+    rgba(139, 92, 246, 0.1) 100%
+  );
+  animation: aurora-flow 20s ease-in-out infinite;
+}
+
+.aurora-layer-1 {
+  top: -50%;
+  left: -50%;
+  animation-delay: 0s;
+  animation-duration: 25s;
+}
+
+.aurora-layer-2 {
+  top: -30%;
+  left: -30%;
+  animation-delay: -8s;
+  animation-duration: 30s;
+  background: linear-gradient(-45deg, 
+    rgba(139, 92, 246, 0.08) 0%,
+    rgba(236, 72, 153, 0.08) 33%,
+    rgba(0, 212, 255, 0.08) 66%,
+    rgba(139, 92, 246, 0.08) 100%
+  );
+}
+
+.aurora-layer-3 {
+  top: -70%;
+  left: -70%;
+  animation-delay: -15s;
+  animation-duration: 35s;
+  background: radial-gradient(ellipse at center,
+    rgba(0, 212, 255, 0.05) 0%,
+    rgba(139, 92, 246, 0.05) 50%,
+    transparent 100%
+  );
+}
+
+@keyframes aurora-flow {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate(-45%, -55%) rotate(90deg) scale(1.1);
+  }
+  50% {
+    transform: translate(-55%, -45%) rotate(180deg) scale(0.9);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(270deg) scale(1.05);
+  }
+}
+
+/* ===== 玻璃拟态容器 ===== */
+.glass-container {
+  background: var(--glass-background);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-glass);
+  position: relative;
+}
+
+.glass-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* ===== 主容器布局 ===== */
+.main-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ===== 页头导航样式 ===== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: var(--spacing-md) var(--spacing-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.nav-brand .brand-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-glow-color), var(--accent-purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.brand-title:hover {
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.brand-subtitle {
+  font-size: 0.875rem;
+  color: var(--secondary-text-color);
+  margin: 0;
+}
+
+.desktop-nav {
+  display: flex;
+  gap: var(--spacing-lg);
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+  color: var(--primary-text-color);
+  font-weight: 500;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(0, 212, 255, 0.2), 
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.nav-link:hover::before {
+  left: 100%;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--accent-glow-color);
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+/* ===== 移动端导航 ===== */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  gap: 4px;
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background: var(--primary-text-color);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-content {
+  width: 90%;
+  max-width: 400px;
+  padding: var(--spacing-xl);
+  position: relative;
+}
+
+.mobile-nav-close {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-line {
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: var(--primary-text-color);
+  border-radius: 2px;
+}
+
+.close-line:first-child {
+  transform: rotate(45deg);
+}
+
+.close-line:last-child {
+  transform: rotate(-45deg);
+}
+
+.mobile-nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+}
+
+.mobile-nav-link {
+  text-decoration: none;
+  color: var(--primary-text-color);
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  color: var(--accent-glow-color);
+  background: rgba(0, 212, 255, 0.1);
+  border-color: rgba(0, 212, 255, 0.3);
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+/* ===== 响应式设计 ===== */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none;
+  }
+  
+  .mobile-menu-toggle {
+    display: flex;
+  }
+  
+  .main-content {
+    padding: var(--spacing-md);
+  }
+  
+  .navbar {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+  
+  .brand-title {
+    font-size: 1.25rem;
+  }
+  
+  .brand-subtitle {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    padding: var(--spacing-sm);
+  }
+  
+  .main-content {
+    padding: var(--spacing-sm);
+  }
+}

@@ -1,0 +1,55 @@
+---
+layout: default
+---
+
+<article class="post-page">
+    <!-- 文章头部 -->
+    <header class="post-header glass-container">
+        <div class="post-meta">
+            <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
+                {{ page.date | date: "%Y年%m月%d日" }}
+            </time>
+            {% if page.author %}
+            <span class="post-author">{{ page.author }}</span>
+            {% endif %}
+        </div>
+        
+        <h1 class="post-title">{{ page.title }}</h1>
+        
+        {% if page.description %}
+        <p class="post-description">{{ page.description }}</p>
+        {% endif %}
+        
+        {% if page.tags.size > 0 %}
+        <div class="post-tags">
+            {% for tag in page.tags %}
+            <a href="{{ '/tags/' | append: tag | relative_url }}" class="post-tag">
+                #{{ tag }}
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </header>
+    
+    <!-- 文章内容 -->
+    <div class="post-content glass-container">
+        {{ content }}
+    </div>
+    
+    <!-- 文章导航 -->
+    <nav class="post-navigation glass-container">
+        {% if page.previous.url %}
+        <a href="{{ page.previous.url | relative_url }}" class="nav-link nav-prev">
+            <div class="nav-direction">← 上一篇</div>
+            <div class="nav-title">{{ page.previous.title }}</div>
+        </a>
+        {% endif %}
+        
+        {% if page.next.url %}
+        <a href="{{ page.next.url | relative_url }}" class="nav-link nav-next">
+            <div class="nav-direction">下一篇 →</div>
+            <div class="nav-title">{{ page.next.title }}</div>
+        </a>
+        {% endif %}
+    </nav>
+</article>

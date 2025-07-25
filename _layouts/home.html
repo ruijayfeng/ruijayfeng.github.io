@@ -1,0 +1,82 @@
+---
+layout: default
+---
+
+<div class="home-page">
+    <!-- 英雄区域 -->
+    <section class="hero-section">
+        <div class="hero-content glass-container">
+            <h1 class="hero-title">{{ site.title }}</h1>
+            <p class="hero-description">{{ site.description }}</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">{{ site.posts | size }}</span>
+                    <span class="stat-label">篇文章</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">{{ site.tags | size }}</span>
+                    <span class="stat-label">个标签</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 最新文章 -->
+    <section class="posts-section">
+        <div class="section-header">
+            <h2 class="section-title">最新文章</h2>
+            <a href="{{ '/posts/' | relative_url }}" class="view-all-link">查看全部 →</a>
+        </div>
+        
+        <div class="posts-grid">
+            {% for post in site.posts limit: 6 %}
+            <article class="post-card glass-container">
+                <div class="post-card-content">
+                    <div class="post-meta">
+                        <time class="post-date" datetime="{{ post.date | date_to_xmlschema }}">
+                            {{ post.date | date: "%Y年%m月%d日" }}
+                        </time>
+                        {% if post.tags.size > 0 %}
+                        <div class="post-tags">
+                            {% for tag in post.tags limit: 2 %}
+                            <span class="post-tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <h3 class="post-title">
+                        <a href="{{ post.url | relative_url }}" class="post-link">
+                            {{ post.title }}
+                        </a>
+                    </h3>
+                    
+                    {% if post.excerpt %}
+                    <p class="post-excerpt">
+                        {{ post.excerpt | strip_html | truncatewords: 30 }}
+                    </p>
+                    {% endif %}
+                    
+                    <div class="post-footer">
+                        <a href="{{ post.url | relative_url }}" class="read-more-link">
+                            阅读全文
+                            <svg class="read-more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% if site.posts.size == 0 %}
+        <div class="empty-state glass-container">
+            <div class="empty-icon">📝</div>
+            <h3 class="empty-title">还没有文章</h3>
+            <p class="empty-description">开始写作，分享你的想法和见解吧！</p>
+        </div>
+        {% endif %}
+    </section>
+</div>
